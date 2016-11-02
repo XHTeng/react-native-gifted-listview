@@ -130,7 +130,7 @@ var GiftedListView = React.createClass({
         style={[this.defaultStyles.paginationView, this.props.customStyles.paginationView]}
       >
         <Text style={[this.defaultStyles.actionsLabel, this.props.customStyles.actionsLabel]}>
-          Load more
+          加载更多
         </Text>
       </TouchableHighlight>
     );
@@ -339,7 +339,8 @@ var GiftedListView = React.createClass({
       backgroundColor: '#CCC'
     },
     actionsLabel: {
-      fontSize: 20,
+      fontSize: 16,
+      color:'#C7C7C7'
     },
     paginationView: {
       height: 44,
