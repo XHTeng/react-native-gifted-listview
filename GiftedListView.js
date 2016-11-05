@@ -149,7 +149,7 @@ var GiftedListView = React.createClass({
     return (
       <View style={[this.defaultStyles.defaultView, this.props.customStyles.defaultView]}>
         <Text style={[this.defaultStyles.defaultViewTitle, this.props.customStyles.defaultViewTitle]}>
-          Sorry, there is no content to display
+          暂无内容
         </Text>
 
         <TouchableHighlight
