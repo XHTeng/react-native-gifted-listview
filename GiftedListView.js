@@ -5,7 +5,7 @@ var React = require('react');
 var {
   ListView,
   Platform,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
   Text,
   RefreshControl,
@@ -124,7 +124,7 @@ var GiftedListView = React.createClass({
     }
 
     return (
-      <TouchableHighlight
+      <TouchableOpacity
         underlayColor='#c8c7cc'
         onPress={paginateCallback}
         style={[this.defaultStyles.paginationView, this.props.customStyles.paginationView]}
@@ -132,7 +132,7 @@ var GiftedListView = React.createClass({
         <Text style={[this.defaultStyles.actionsLabel, this.props.customStyles.actionsLabel]}>
           加载更多
         </Text>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   },
   headerView() {
@@ -147,19 +147,8 @@ var GiftedListView = React.createClass({
     }
 
     return (
-      <View style={[this.defaultStyles.defaultView, this.props.customStyles.defaultView]}>
-        <Text style={[this.defaultStyles.defaultViewTitle, this.props.customStyles.defaultViewTitle]}>
-          暂无内容
-        </Text>
+      <View>
 
-        <TouchableHighlight
-          underlayColor='#c8c7cc'
-          onPress={refreshCallback}
-        >
-          <Text>
-            ↻
-          </Text>
-        </TouchableHighlight>
       </View>
     );
   },
