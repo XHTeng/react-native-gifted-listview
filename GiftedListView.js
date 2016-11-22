@@ -123,17 +123,35 @@ var GiftedListView = React.createClass({
       return this.props.paginationWaitingView(paginateCallback);
     }
 
-    return (
-      <TouchableOpacity
-        underlayColor='#c8c7cc'
-        onPress={paginateCallback}
-        style={[this.defaultStyles.paginationView, this.props.customStyles.paginationView]}
-      >
-        <Text style={[this.defaultStyles.actionsLabel, this.props.customStyles.actionsLabel]}>
-          加载更多
-        </Text>
-      </TouchableOpacity>
-    );
+
+    if (this.props.hiddenLoadMore) {
+      return (
+          <TouchableOpacity
+              underlayColor='#c8c7cc'
+              onPress={paginateCallback}
+              style={[this.defaultStyles.paginationView, this.props.customStyles.paginationView]}
+          >
+            <View style={{height:30,width:100,backgroundColor:'white'}}>
+
+            </View>
+
+          </TouchableOpacity>
+      );
+    }else {
+      return (
+          <TouchableOpacity
+              underlayColor='#c8c7cc'
+              onPress={paginateCallback}
+              style={[this.defaultStyles.paginationView, this.props.customStyles.paginationView]}
+          >
+            <Text style={[this.defaultStyles.actionsLabel, this.props.customStyles.actionsLabel]}>
+              加载更多
+            </Text>
+          </TouchableOpacity>
+      );
+    }
+
+
   },
   headerView() {
     if (this.state.paginationStatus === 'firstLoad' || !this.props.headerView){
@@ -320,6 +338,8 @@ var GiftedListView = React.createClass({
         style={this.props.style}
       />
     );
+
+
   },
 
   defaultStyles: {
