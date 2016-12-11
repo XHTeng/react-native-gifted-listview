@@ -318,28 +318,52 @@ var GiftedListView = React.createClass({
   },
 
   render() {
-    return (
-      <ListView
-        ref="listview"
-        dataSource={this.state.dataSource}
-        renderRow={this.props.rowView}
-        renderSectionHeader={this.props.sectionHeaderView}
-        renderHeader={this.headerView}
-        renderFooter={this._renderPaginationView}
-        renderSeparator={this.renderSeparator}
-scrollEventThrottle={200}
-        automaticallyAdjustContentInsets={false}
-        scrollEnabled={this.props.scrollEnabled}
-        canCancelContentTouches={true}
-        refreshControl={this.props.refreshable === true ? this.renderRefreshControl() : null}
+      if (Platform.OS=='ios') {
+        return (
+            <ListView
+                ref="listview"
+                dataSource={this.state.dataSource}
+                renderRow={this.props.rowView}
+                renderSectionHeader={this.props.sectionHeaderView}
+                renderHeader={this.headerView}
+                renderFooter={this._renderPaginationView}
+                renderSeparator={this.renderSeparator}
+                scrollEventThrottle={200}
+                automaticallyAdjustContentInsets={false}
+                scrollEnabled={this.props.scrollEnabled}
+                canCancelContentTouches={true}
+                isOnPullToRefresh={this.state.isRefreshing}
+                onRefreshData={() => {
+                  this._onRefresh();
+                }}
+                enablePullToRefresh={true}
+                {...this.props}
 
-        {...this.props}
+                style={this.props.style}
+            />
+        )
+      }else {
+        return (
+            <ListView
+                ref="listview"
+                dataSource={this.state.dataSource}
+                renderRow={this.props.rowView}
+                renderSectionHeader={this.props.sectionHeaderView}
+                renderHeader={this.headerView}
+                renderFooter={this._renderPaginationView}
+                renderSeparator={this.renderSeparator}
+                scrollEventThrottle={200}
+                automaticallyAdjustContentInsets={false}
+                scrollEnabled={this.props.scrollEnabled}
+                canCancelContentTouches={true}
+                refreshControl={this.props.refreshable === true ? this.renderRefreshControl() : null}
 
-        style={this.props.style}
-      />
-    );
+                {...this.props}
 
-
+                style={this.props.style}
+            />
+        )
+      }
   },
 
   defaultStyles: {
