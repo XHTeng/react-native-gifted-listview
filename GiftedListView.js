@@ -12,6 +12,7 @@ var {
   ActivityIndicator,
 } = require('react-native');
 
+let delayTime = 500;
 
 // small helper function which merged two objects into one
 function MergeRecursive(obj1, obj2) {
@@ -220,6 +221,7 @@ var GiftedListView = React.createClass({
   },
 
   _onRefresh(options = {}) {
+
     if (this.isMounted()) {
       this.setState({
         isRefreshing: true,
@@ -258,7 +260,7 @@ var GiftedListView = React.createClass({
     if(this.props.distinctRows){
       mergedRows = this.props.distinctRows(mergedRows);
     }
-    
+
     this._updateRows(mergedRows, options);
   },
 
@@ -266,23 +268,59 @@ var GiftedListView = React.createClass({
     if (rows !== null) {
       this._setRows(rows);
       if (this.props.withSections === true) {
+        if (Platform.OS=='ios') {
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRowsAndSections(rows),
+            paginationStatus: (options.allLoaded === true ? 'allLoaded' : 'waiting'),
+          });
+          setTimeout(() => {
+            this.setState({
+              isRefreshing: false,
+            });
+          }, delayTime);
+        }else {
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRowsAndSections(rows),
+            isRefreshing: false,
+            paginationStatus: (options.allLoaded === true ? 'allLoaded' : 'waiting'),
+          });
+        }
+
+      } else {
+        if (Platform.OS=='ios') {
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(rows),
+            paginationStatus: (options.allLoaded === true ? 'allLoaded' : 'waiting'),
+          });
+          setTimeout(() => {
+            this.setState({
+              isRefreshing: false,
+            });
+          }, delayTime);
+        }else {
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(rows),
+            isRefreshing: false,
+            paginationStatus: (options.allLoaded === true ? 'allLoaded' : 'waiting'),
+          });
+        }
+      }
+    } else {
+      if (Platform.OS=='ios') {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRowsAndSections(rows),
-          isRefreshing: false,
           paginationStatus: (options.allLoaded === true ? 'allLoaded' : 'waiting'),
         });
-      } else {
+        setTimeout(() => {
+          this.setState({
+            isRefreshing: false,
+          });
+        }, delayTime);
+      }else {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(rows),
           isRefreshing: false,
           paginationStatus: (options.allLoaded === true ? 'allLoaded' : 'waiting'),
         });
       }
-    } else {
-      this.setState({
-        isRefreshing: false,
-        paginationStatus: (options.allLoaded === true ? 'allLoaded' : 'waiting'),
-      });
     }
   },
 
@@ -298,6 +336,10 @@ var GiftedListView = React.createClass({
     } else {
       return null;
     }
+  },
+
+  componentWillUnmount() {
+    this.timer && clearTimeout(this.timer);
   },
 
   renderRefreshControl() {
@@ -335,7 +377,11 @@ var GiftedListView = React.createClass({
                   canCancelContentTouches={true}
                   isOnPullToRefresh={this.state.isRefreshing}
                   onRefreshData={() => {
-                    this._onRefresh();
+
+                      if (!this.state.isRefreshing) {
+                        this._onRefresh();
+                      }
+
                   }}
                   enablePullToRefresh={true}
                   {...this.props}
