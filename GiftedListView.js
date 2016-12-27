@@ -447,7 +447,7 @@ var GiftedListView = React.createClass({
       height: 44,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#FFF',
+      backgroundColor: 'transparent',
     },
     defaultView: {
       justifyContent: 'center',
