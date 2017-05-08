@@ -341,6 +341,10 @@ var GiftedListView = React.createClass({
   componentWillUnmount() {
     this.timer && clearTimeout(this.timer);
   },
+  
+  _scrollTo(data){
+    this.refs.listview.scrollTo(data);
+  },
 
   renderRefreshControl() {
     if (this.props.renderRefreshControl) {
