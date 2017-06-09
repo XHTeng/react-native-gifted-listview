@@ -337,6 +337,12 @@ var GiftedListView = React.createClass({
       return null;
     }
   },
+  
+  _endRefreshing() {
+    this.setState({
+      isRefreshing:false
+    })
+  },
 
   componentWillUnmount() {
     this.timer && clearTimeout(this.timer);
